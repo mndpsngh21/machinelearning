@@ -1,44 +1,47 @@
-# Simple Linear Regression
+# Sample project for Linear Regression
 
-# Importing the libraries
+# Import required libraries 
 import numpy as np
+# library for draw graphs
 import matplotlib.pyplot as plt
+# panda is library for data read from csv
 import pandas as pd
 
-# Importing the dataset
+# Importing data from csv file
 dataset = pd.read_csv('Salary_Data.csv')
-X = dataset.iloc[:, :-1].values
-y = dataset.iloc[:, 1].values
+# dataSet for read all values those are indpendent variables 
+x_data = dataset.iloc[:, :-1].values
+# dataSet for read for all dependent variable i.e which we want to predict the data
+y_data = dataset.iloc[:, 1].values
 
-# Splitting the dataset into the Training set and Test set
+# For testing purpose we will split data into two part one for training purpose and another for testing purpose
+# We will use sklearn model_selection for split data into test and training part
+# X_train - trainning data set
+# X_test - testing data set
+# y_train - training dependent variables (we are resuts for data)
+# y_test - testing data actual results
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 1/3, random_state = 0)
+X_train, X_test, y_train, y_test = train_test_split(x_data, y_data, test_size = 1/3, random_state = 0)
 
-# Feature Scaling
-"""from sklearn.preprocessing import StandardScaler
-sc_X = StandardScaler()
-X_train = sc_X.fit_transform(X_train)
-X_test = sc_X.transform(X_test)
-sc_y = StandardScaler()
-y_train = sc_y.fit_transform(y_train.reshape(-1,1))"""
-
-# Fitting Simple Linear Regression to the Training set
+# This is starting of our machine we will use linear model
+# we will use LinearRegression class
 from sklearn.linear_model import LinearRegression
 regressor = LinearRegression()
+# by calling we will train our machine
 regressor.fit(X_train, y_train)
 
-# Predicting the Test set results
+# Predicting the Test set results,machine will return data as array
 y_pred = regressor.predict(X_test)
 
-# Visualising the Training set results
-plt.scatter(X_train, y_train, color = 'red')
+# For understanding values and view data in contrast of linear regression values 
+plt.scatter(X_train, y_train, color = 'orange')
 plt.plot(X_train, regressor.predict(X_train), color = 'blue')
-plt.title('Salary vs Experience (Training set)')
+plt.title('Salary/Experience (Training Data)')
 plt.xlabel('Years of Experience')
 plt.ylabel('Salary')
 plt.show()
 
-# Visualising the Test set results
+# Visualising the Test set results to view on what basis machine is predicting value
 plt.scatter(X_test, y_test, color = 'red')
 plt.plot(X_train, regressor.predict(X_train), color = 'blue')
 plt.title('Salary vs Experience (Test set)')
