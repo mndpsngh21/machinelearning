@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Apr 12 16:27:33 2020
-
+Difference between simple linear model and this model is that simple Linear 
+Regression model and only one independent variable but for this model we have
+multiple independent variable, we will use a sample data of startup companies 
+and try predict profit for a company
 @author: Mandeep
 """
 
@@ -24,7 +27,7 @@ y_data = dataset.iloc[:, 4].values
 
 # As in data we have categorial information we will need to encode that data to
 # some meaningfulo information. The reason behind this is that we can only use
-# mathematical values but we have data which has text values 
+# mathematical values but we have data which has text values    
 
 
 # Encoding categorical data
