@@ -64,3 +64,94 @@ regressor.fit(X_train,y_train)
 # So finally let us predict profit for our test_data
 test_predict=regressor.predict(X_test)
 
+# now we have predicted all values but there is one problem we are considering 
+# all independent variables which effects our model performance, so we will use 
+# backward elimination technique to find variables those are effecting our 
+# prediction.
+
+#To build optimal model we will use one library, which has this feature inbuilt
+import statsmodels.formula.api as sm
+""" we need to understand one thing that we do not have any constant variable
+    which is required for expression as below:
+        y= b0 + b1.x1 + b2.x2 +......+bn.xn
+        y= profit
+        x1,x2,x3...xn= independent varabiables
+        b0,b1,b2...bn= coefficient of variables
+        b0= constant ---> which is unknown for us
+    So what is solution? we will fill b0 with value=1 to handle this problem
+, we are doing this for this library's requirement """
+# we are going to use np library to fill this values
+x_data = np.append(arr=np.ones((50,1)).astype(int),values = x_data, axis=1)
+
+# Now we have data but for elamination we need to find variables those are effecting 
+# our model
+
+# For model optimization we will use another library and make our model optimal
+""" Backword elimination techinque:
+    1. set significance level S i.e. 0.05 for our case 
+    2. fit full model with all possible predictors.
+    3. find predictor with highest p value and if p>S next step,otherwise 
+       finish. 
+    4. remove predictor
+    5. go to 2 """"
+    
+# we will use sm for fitting
+# we are making matric for optimization and will perform operation on that    
+X_opt =x_data[:,[0,1,2,3,4]]
+# let us fit this model for checking performance
+import statsmodels.regression.linear_model as lm
+regressor_OLS = lm.OLS(endog = y_data, exog = X_opt).fit()
+# execute below command and look for P>|t| value which has highest values remove that 
+regressor_OLS.summary()     
+# we found x2 has 0.991 which is more than significance level S i.e. 0.05
+# let us remove it
+X_opt =x_data[:,[0,1,3,4,5]]
+# let us fit this model for checking performance
+regressor_OLS = lm.OLS(endog = y_data, exog = X_opt).fit()
+# execute below command and look for P>|t| value which has highest values remove that 
+regressor_OLS.summary()     
+# we found x1 has 0.703 which is more than significance level S i.e. 0.05
+# let us remove it
+X_opt =x_data[:,[0,3,4,5]]
+# let us fit this model for checking performance
+regressor_OLS = lm.OLS(endog = y_data, exog = X_opt).fit()
+# execute below command and look for P>|t| value which has highest values remove that 
+regressor_OLS.summary()     
+# we found x1 has 0.602 which is more than significance level S i.e. 0.05
+X_opt =x_data[:,[0,3,5]]
+# let us fit this model for checking performance
+regressor_OLS = lm.OLS(endog = y_data, exog = X_opt).fit()
+# execute below command and look for P>|t| value which has highest values remove that 
+regressor_OLS.summary() 
+# we found x1 has 0.060 which is more than significance level S i.e. 0.05
+# let us remove it    
+X_opt =x_data[:,[0,3]]
+# let us fit this model for checking performance
+regressor_OLS = lm.OLS(endog = y_data, exog = X_opt).fit()
+# execute below command and look for P>|t| value which has highest values remove that 
+regressor_OLS.summary()     
+# so now we dont have anything to remove so we will exit
+
+
+### automatic elimination technique
+
+import statsmodels.formula.api as sm
+import statsmodels.regression.linear_model as lm
+def backwardElimination(x, sl):
+    numVars = len(x[0])
+    for i in range(0, numVars):
+        regressor_OLS = lm.OLS(y_data, x).fit()
+        maxVar = max(regressor_OLS.pvalues).astype(float)
+        if maxVar > sl:
+            for j in range(0, numVars - i):
+                if (regressor_OLS.pvalues[j].astype(float) == maxVar):
+                    x = np.delete(x, j, 1)
+    regressor_OLS.summary()
+    return x
+    
+ 
+SL = 0.05
+X_opt = x_data[:, [0, 1, 2, 3, 4, 5]]
+X_Modeled = backwardElimination(X_opt, SL)    
+       
+
