@@ -37,5 +37,8 @@ plt.scatter(X,y, color='red')
 plt.plot(X,lin_reg.predict(X),color='green')
 # blue color is showing our model in polynomial regression form
 plt.plot(X,lr_2.predict(poly_feat.fit_transform(X,y)),color='blue')
+plt.title('Comparison of Linear(green) and Polynomial(blue) Regression')
+plt.xlabel('Position Level')
+plt.ylabel('Salary')
 plt.show()
 
