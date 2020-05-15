@@ -43,8 +43,8 @@ for which the true values are known
 """
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_test, y_pred)
-# expected result from is [[62 6]
-#                          [3 29]  ]
+# expected result from is [[63 5]
+#                          [4 28]  ]
 # which means only 9 are wrong predictions
 
 
